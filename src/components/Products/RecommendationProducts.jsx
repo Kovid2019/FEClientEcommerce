@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Heart, Star } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 import reviewStar from "../../utils/reviewStar";
@@ -22,7 +22,14 @@ const RecommendationProducts = () => {
   const { user, wishlistProducts } = useSelector((state) => state.user);
 
   const isLoggedIn = !!user && !!user._id;
+
   // const [wishlist, setWishlist] = useState([]);
+
+  const calculateDiscountPercentage = (price, discountPrice) => {
+    return price !== discountPrice
+      ? Math.round(((price - discountPrice) / price) * 100)
+      : 0;
+  };
   const handleToggleWishlist = (productId) => {
     if (!isLoggedIn) {
       toast.error("You must be Logged In to use the wishlist");
@@ -35,16 +42,12 @@ const RecommendationProducts = () => {
     dispatch(getUserAction());
   }, [dispatch]);
 
-  const calculateDiscountPercentage = (price, discountPrice) => {
-    return price !== discountPrice
-      ? Math.round(((price - discountPrice) / price) * 100)
-      : 0;
-  };
-
-  //function to check if product is wishlisted
-  // const isProductWishlisted = (productId) => {
-  //   return wishlist.includes(productId);
-  // };
+  // Fetch wishlist only after user is loaded
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(fetchWishlistAction());
+    }
+  }, [dispatch, user?._id]);
 
   // //function to toggle wishlist
   // const toggleWishlist = (id) => {
@@ -74,7 +77,6 @@ const RecommendationProducts = () => {
           const { fullstarrating, halfstar, emptystars } = reviewStar(
             product.reviews
           );
-          // const isWishlisted = isProductWishlisted(product._id);
 
           return (
             <Card

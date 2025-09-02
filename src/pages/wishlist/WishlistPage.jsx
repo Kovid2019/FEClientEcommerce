@@ -18,8 +18,10 @@ const WishlistPage = () => {
   const isLoggedIn = !!user && !!user._id;
   //Get the whole products details from wishlist
   const wishlist = useSelector((state) => state.user.wishlistProductDetails);
-  const [localWishlist, setLocalWishlist] = useState([]);
+
   console.log("WISHLIST IN COMPONENT : ", wishlist);
+  const [localWishlist, setLocalWishlist] = useState([]);
+  // Fetch wishlist products on mount
   useEffect(() => {
     dispatch(fetchWishlistAction());
   }, [dispatch]);
@@ -33,6 +35,7 @@ const WishlistPage = () => {
     //To remove product from wishlist : From Backend
     dispatch(toggleWishlistAction(productId));
   };
+
   //Display the products in JSX, if the user is loggedin.
   if (isLoggedIn) {
     return (

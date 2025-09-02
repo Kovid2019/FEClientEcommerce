@@ -9,7 +9,6 @@ import Rating from "../star/Rating";
 import reviewStar from "../../utils/reviewStar";
 import { toast } from "react-toastify";
 import { toggleWishlistAction } from "../../features/user/userAction";
-
 const LatestProducts = () => {
   const { products } = useSelector((state) => state.productInfo);
   const navigate = useNavigate();
@@ -25,19 +24,6 @@ const LatestProducts = () => {
       : 0;
   };
 
-  //function to check if product is wishlisted
-  // const isProductWishlisted = (productId) => {
-  //   return wishlist.includes(productId);
-  // };
-
-  //function to toggle wishlist
-  // const toggleWishlist = (id) => {
-  //   setWishlist((prev) =>
-  //     prev.includes(id)
-  //       ? prev.filter((wishlist) => wishlist !== id)
-  //       : [...prev, id]
-  //   );
-  // };
   const handleToggleWishlist = (productId) => {
     if (!isLoggedIn) {
       toast.error("You must be Logged In to use the wishlist");

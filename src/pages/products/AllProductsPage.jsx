@@ -10,8 +10,10 @@ import {
 import FilterSidebar from "../../components/sidebar/FilterSideBar";
 import { useSelector } from "react-redux";
 import { Collapse } from "../../components/collapsible/Collapse";
-import { Link, useSearchParams } from "react-router-dom";
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { setFiltered } from "../../features/filters/filterSlice";
+import { fetchFilteredProducts } from "../../features/filters/fetchFilteredProducts";
+import { useSearchParams } from "react-router-dom";
 const AllProductsPage = () => {
   const [showFilter, setShowFilter] = useState(true);
   const { products, FilterProduct } = useSelector((state) => state.productInfo);
@@ -140,17 +142,17 @@ const AllProductsPage = () => {
   return (
     <div className="mx-auto px-4">
       <div className="bg-gray-100 p-4 mb-6">
-        <Breadcrumb className="flex flex-wrap items-center space-x-1 text-sm">
+        <Breadcrumb className="flex flex-wrap items-center space-x-1 text-sm ">
           <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/" className="text-foreground">
+            <BreadcrumbLink>
+              <Link to="/" className="text-foreground hover:text-primary">
                 Home
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="mx-2">{">"}</BreadcrumbSeparator>
           <BreadcrumbItem>
-            <BreadcrumbLink asChild>
+            <BreadcrumbLink>
               <Link to="/allproducts" className="text-foreground">
                 All Products
               </Link>

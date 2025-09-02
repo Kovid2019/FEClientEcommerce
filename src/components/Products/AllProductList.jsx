@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,12 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { fetchFilterProductAction } from "../../features/product/productAction";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
 
 import {
-  toggleWishlistAction,
   fetchWishlistAction,
   getUserAction,
+  toggleWishlistAction,
 } from "../../features/user/userAction";
 import { toast } from "react-toastify";
 
