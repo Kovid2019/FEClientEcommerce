@@ -1,9 +1,14 @@
 version: 0.2
 
+env:
+  variables:
+    VITE_APP_API_BASE_URL: "ecommerce-client-backend-env.eba-ssm7eq3x.ap-southeast-2.elasticbeanstalk.com"
+    VITE_APP_STRIPE_PUBLIC_KEY: "pk_test_51Rlk7IAS81Snyc3lAlBRshsKloPFYVqkWOiqDVRKqhqLFFghyNVo097iE9aU6Cpu209kVgHgCTcuuAghi4B1xjuJ00hmq2E7s7"
+
 phases:
   install:
     runtime-versions:
-      nodejs: 20 # Required for react-router-dom v7.7.0
+      nodejs: 20
     commands:
       - echo "Setting up Node.js environment..."
       - node --version
@@ -17,7 +22,11 @@ phases:
 
   build:
     commands:
-      - echo "Building Vite application..."
+      - echo "Building Vite application with environment variables..."
+      # Create .env.production file for build
+      - echo "VITE_APP_API_BASE_URL=$VITE_APP_API_BASE_URL" > .env.production
+      - echo "VITE_APP_STRIPE_PUBLIC_KEY=$VITE_APP_STRIPE_PUBLIC_KEY" >> .env.production
+      - echo ".env.production created"
       - yarn build
       - echo "Build completed successfully!"
 
@@ -25,8 +34,9 @@ phases:
     commands:
       - echo "Build output:"
       - ls -la dist/
-      - echo "Build size:"
-      - du -sh dist/
+      # Optional: debugging (remove later)
+      - grep -r "$VITE_APP_API_BASE_URL" dist/ || echo "API URL not found in built files"
+      - grep -r "$VITE_APP_STRIPE_PUBLIC_KEY" dist/ || echo "Stripe key not found in built files"
 
 artifacts:
   files:
